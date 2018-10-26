@@ -791,6 +791,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.NAVIGATION_BAR_VISIBLE), false, this,
                     UserHandle.USER_ALL);
+            mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_QUICKBAR_SCROLL_ENABLED),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
         
@@ -1046,7 +1049,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             if (mScrimController != null) {
                 mScrimController.setSecurityOverlayAlpha(securityoverlayalpha);
             }
-        }
+         }
     }
 
     // ensure quick settings is disabled until the current user makes it through the setup wizard
@@ -5935,6 +5938,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     public void onClosingFinished() {
         runPostCollapseRunnables();
+        mHeader.onClosingFinished();
     }
 
     public void onUnlockHintStarted() {

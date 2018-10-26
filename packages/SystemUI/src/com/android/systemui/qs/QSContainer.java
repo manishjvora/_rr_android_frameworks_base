@@ -26,6 +26,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.os.UserHandle;
+import android.provider.Settings;
+import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import com.android.systemui.Interpolators;
 import com.android.systemui.R;
 import com.android.systemui.qs.customize.QSCustomizer;
@@ -33,6 +37,7 @@ import com.android.systemui.statusbar.phone.BaseStatusBarHeader;
 import com.android.systemui.statusbar.phone.NotificationPanelView;
 import com.android.systemui.statusbar.phone.QSTileHost;
 import com.android.systemui.statusbar.stack.StackStateAnimator;
+
 
 /**
  * Wrapper view with background which contains {@link QSPanel} and {@link BaseStatusBarHeader}
@@ -62,7 +67,8 @@ public class QSContainer extends FrameLayout {
     private NotificationPanelView mPanelView;
     private boolean mListening;
     boolean mTaskmanagerShowing;
-
+    private HorizontalScrollView mQuickQsPanelScroller;
+    
     public QSContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -74,8 +80,9 @@ public class QSContainer extends FrameLayout {
         mQSDetail = (QSDetail) findViewById(R.id.qs_detail);
         mHeader = (BaseStatusBarHeader) findViewById(R.id.header);
         mQSDetail.setQsPanel(mQSPanel, mHeader);
+        mQuickQsPanelScroller = (HorizontalScrollView) mHeader.findViewById(R.id.quick_qs_panel_scroll);
         mQSAnimator = new QSAnimator(this, (QuickQSPanel) mHeader.findViewById(R.id.quick_qs_panel),
-                mQSPanel);
+                mQSPanel, mQuickQsPanelScroller);
         mQSCustomizer = (QSCustomizer) findViewById(R.id.qs_customize);
         mQSCustomizer.setQsContainer(this);
     }
